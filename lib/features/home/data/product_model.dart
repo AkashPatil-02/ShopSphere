@@ -1,3 +1,5 @@
+import 'package:shopsphere/features/products/data/reviews_model.dart';
+
 class Product {
   final int id;
   final String title;
@@ -11,6 +13,7 @@ class Product {
   final String thumbnail;
   final List<String> images;
   final String availabilityStatus;
+  final List<Review> reviews;
 
   const Product({
     required this.id,
@@ -25,6 +28,7 @@ class Product {
     required this.thumbnail,
     required this.images,
     required this.availabilityStatus,
+    required this.reviews
   });
 
   double get discountedPrice =>
@@ -46,6 +50,7 @@ class Product {
       thumbnail: json['thumbnail'] as String,
       images: List<String>.from(json['images'] as List),
       availabilityStatus: json['availabilityStatus'] as String,
+      reviews: (json['reviews'] as List<dynamic>? ?? []).map((review) => Review.fromJson(review as Map<String, dynamic>,)).toList(),
     );
   }
 

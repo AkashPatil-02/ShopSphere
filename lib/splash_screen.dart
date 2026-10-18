@@ -45,13 +45,22 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FlutterLogo(size: 80),
+            Icon(Icons.shopping_bag_rounded ,size: 72,color: Colors.blueAccent,),
             SizedBox(height: 24),
             Text(
               'ShopSphere',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
+              ),
+            ),
+             SizedBox(height: 28),
+             Text(
+              'Groceries to Furnitures, we got you covered',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
               ),
             ),
             SizedBox(height: 24),
