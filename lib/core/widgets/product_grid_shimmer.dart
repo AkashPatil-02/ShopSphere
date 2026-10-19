@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
 class ProductGridShimmer extends StatelessWidget {
+  const ProductGridShimmer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -14,7 +15,7 @@ class ProductGridShimmer extends StatelessWidget {
         childAspectRatio: 0.72,
       ),
       itemCount: 6,
-      itemBuilder: (_, __) => Shimmer(
+      itemBuilder: (_, _) => Shimmer(
         duration: const Duration(seconds: 1),
         interval: const Duration(milliseconds: 200),
         color: Colors.white,

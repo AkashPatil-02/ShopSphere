@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shopsphere/core/auth/auth_repository.dart';
 import 'package:shopsphere/features/auth/cubit/auth_cubit.dart';
 import 'package:shopsphere/features/auth/cubit/auth_state.dart';
-import 'package:shopsphere/features/home/presentation/Home_screen.dart';
+import 'package:shopsphere/features/home/presentation/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -28,10 +28,8 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView>
     with SingleTickerProviderStateMixin {
-  final TextEditingController _usernameController =
-      TextEditingController();
-  final TextEditingController _passwordController =
-      TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -55,15 +53,10 @@ class _LoginViewState extends State<LoginView>
       curve: Curves.easeOut,
     );
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.15),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _animController,
-        curve: Curves.easeOutCubic,
-      ),
-    );
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.15), end: Offset.zero).animate(
+          CurvedAnimation(parent: _animController, curve: Curves.easeOutCubic),
+        );
 
     _animController.forward();
   }
@@ -79,17 +72,12 @@ class _LoginViewState extends State<LoginView>
   void _showSnackBar(String message, {bool isError = true}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          message,
-          style: GoogleFonts.inter(),
-        ),
+        content: Text(message, style: GoogleFonts.inter()),
         backgroundColor: isError
             ? Colors.redAccent.withValues(alpha: 0.9)
             : Colors.green.shade700.withValues(alpha: 0.9),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         margin: const EdgeInsets.all(16),
       ),
     );
@@ -99,9 +87,9 @@ class _LoginViewState extends State<LoginView>
     if (!_formKey.currentState!.validate()) return;
 
     context.read<LoginCubit>().login(
-          username: _usernameController.text.trim(),
-          password: _passwordController.text,
-        );
+      username: _usernameController.text.trim(),
+      password: _passwordController.text,
+    );
   }
 
   @override
@@ -110,9 +98,7 @@ class _LoginViewState extends State<LoginView>
       listener: (context, state) {
         if (state.status == LoginStatus.success) {
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (_) => const HomeScreen(),
-            ),
+            MaterialPageRoute(builder: (_) => const HomeScreen()),
             (route) => false,
           );
         }
@@ -164,10 +150,7 @@ class _LoginViewState extends State<LoginView>
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             gradient: const LinearGradient(
-                              colors: [
-                                Color(0xFF6750A4),
-                                Color(0xFF9C8ADE),
-                              ],
+                              colors: [Color(0xFF6750A4), Color(0xFF9C8ADE)],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
@@ -219,8 +202,7 @@ class _LoginViewState extends State<LoginView>
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color:
-                                    Colors.black.withValues(alpha: 0.2),
+                                color: Colors.black.withValues(alpha: 0.2),
                                 blurRadius: 30,
                                 offset: const Offset(0, 10),
                               ),
@@ -237,8 +219,7 @@ class _LoginViewState extends State<LoginView>
                                   icon: Icons.person_outline,
                                   keyboardType: TextInputType.text,
                                   validator: (value) {
-                                    if (value == null ||
-                                        value.trim().isEmpty) {
+                                    if (value == null || value.trim().isEmpty) {
                                       return 'Please enter your username';
                                     }
                                     return null;
@@ -262,8 +243,7 @@ class _LoginViewState extends State<LoginView>
                                     ),
                                     onPressed: () {
                                       setState(() {
-                                        _obscurePassword =
-                                            !_obscurePassword;
+                                        _obscurePassword = !_obscurePassword;
                                       });
                                     },
                                   ),
@@ -285,19 +265,22 @@ class _LoginViewState extends State<LoginView>
                                       width: double.infinity,
                                       height: 52,
                                       child: ElevatedButton(
-                                        onPressed:
-                                            isLoading ? null : _handleLogin,
+                                        onPressed: isLoading
+                                            ? null
+                                            : _handleLogin,
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              const Color(0xFF6750A4),
+                                          backgroundColor: const Color(
+                                            0xFF6750A4,
+                                          ),
                                           foregroundColor: Colors.white,
-                                          disabledBackgroundColor:
-                                              const Color(0xFF6750A4)
-                                                  .withValues(alpha: 0.5),
+                                          disabledBackgroundColor: const Color(
+                                            0xFF6750A4,
+                                          ).withValues(alpha: 0.5),
                                           elevation: 0,
                                           shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(14),
+                                            borderRadius: BorderRadius.circular(
+                                              14,
+                                            ),
                                           ),
                                         ),
                                         child: isLoading
@@ -306,9 +289,9 @@ class _LoginViewState extends State<LoginView>
                                                 height: 22,
                                                 child:
                                                     CircularProgressIndicator(
-                                                  strokeWidth: 2.5,
-                                                  color: Colors.white,
-                                                ),
+                                                      strokeWidth: 2.5,
+                                                      color: Colors.white,
+                                                    ),
                                               )
                                             : Text(
                                                 'Sign In',
@@ -351,22 +334,12 @@ class _LoginViewState extends State<LoginView>
       controller: controller,
       obscureText: obscure,
       keyboardType: keyboardType,
-      style: GoogleFonts.inter(
-        color: Colors.white,
-        fontSize: 14,
-      ),
+      style: GoogleFonts.inter(color: Colors.white, fontSize: 14),
       validator: validator,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: GoogleFonts.inter(
-          color: Colors.white30,
-          fontSize: 14,
-        ),
-        prefixIcon: Icon(
-          icon,
-          color: Colors.white38,
-          size: 20,
-        ),
+        hintStyle: GoogleFonts.inter(color: Colors.white30, fontSize: 14),
+        prefixIcon: Icon(icon, color: Colors.white38, size: 20),
         suffixIcon: suffixIcon,
         filled: true,
         fillColor: Colors.white.withValues(alpha: 0.05),
@@ -380,30 +353,19 @@ class _LoginViewState extends State<LoginView>
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: Colors.white.withValues(alpha: 0.08),
-          ),
+          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.08)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: Color(0xFF6750A4),
-            width: 1.5,
-          ),
+          borderSide: const BorderSide(color: Color(0xFF6750A4), width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: Colors.redAccent,
-            width: 1,
-          ),
+          borderSide: const BorderSide(color: Colors.redAccent, width: 1),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: Colors.redAccent,
-            width: 1.5,
-          ),
+          borderSide: const BorderSide(color: Colors.redAccent, width: 1.5),
         ),
         errorStyle: GoogleFonts.inter(fontSize: 11),
       ),

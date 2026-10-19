@@ -9,20 +9,20 @@ class TokenManagement {
   static const _accessKey = 'access_token';
   static const _refreshKey = 'refresh_token';
 
-  Future<void> saveTokens(TokenPair pair)async{
-    await _storage.write(key: _accessKey, value:pair.accessToken);
-    await _storage.write(key: _refreshKey, value:pair.refreshToken);
+  Future<void> saveTokens(TokenPair pair) async {
+    await _storage.write(key: _accessKey, value: pair.accessToken);
+    await _storage.write(key: _refreshKey, value: pair.refreshToken);
   }
 
-  Future<String?> getAccessToken()async{
-    return _storage.read(key: _accessKey);   
+  Future<String?> getAccessToken() async {
+    return _storage.read(key: _accessKey);
   }
 
-  Future<String?> getRefreshToken()async{
-    return _storage.read(key: _refreshKey);   
+  Future<String?> getRefreshToken() async {
+    return _storage.read(key: _refreshKey);
   }
 
-  Future<void> clearTokens()async{
+  Future<void> clearTokens() async {
     _storage.delete(key: _accessKey);
     _storage.delete(key: _refreshKey);
   }

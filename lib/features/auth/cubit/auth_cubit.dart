@@ -3,12 +3,10 @@ import 'package:shopsphere/features/auth/cubit/auth_state.dart';
 
 import '../../../core/auth/auth_repository.dart';
 
-
 class LoginCubit extends Cubit<LoginState> {
   final AuthRepository _authRepository;
 
-  LoginCubit(this._authRepository)
-      : super(const LoginState());
+  LoginCubit(this._authRepository) : super(const LoginState());
 
   Future<void> login({
     required String username,

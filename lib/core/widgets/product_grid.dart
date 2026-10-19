@@ -12,12 +12,15 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>BlocProvider(
-          create: (_)=>ProductCubit(ProductEndpoints()),
-          child: ProductDetailsScreen(pID: product.id),
-        )
-        )
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BlocProvider(
+              create: (_) => ProductCubit(ProductEndpoints()),
+              child: ProductDetailsScreen(pID: product.id),
+            ),
+          ),
         );
       },
       child: Card(
@@ -34,7 +37,7 @@ class ProductCard extends StatelessWidget {
                   Image.network(
                     product.thumbnail,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => const Center(
+                    errorBuilder: (_, _, _) => const Center(
                       child: Icon(Icons.broken_image_outlined, size: 40),
                     ),
                   ),
@@ -44,15 +47,16 @@ class ProductCard extends StatelessWidget {
                       left: 8,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.red.shade700,
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: const Text(
                           'Out of Stock',
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 10),
+                          style: TextStyle(color: Colors.white, fontSize: 10),
                         ),
                       ),
                     ),
@@ -62,7 +66,9 @@ class ProductCard extends StatelessWidget {
                       right: 8,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.green.shade700,
                           borderRadius: BorderRadius.circular(4),
@@ -70,7 +76,9 @@ class ProductCard extends StatelessWidget {
                         child: Text(
                           '-${product.discountPercentage.toStringAsFixed(0)}%',
                           style: const TextStyle(
-                              color: Colors.white, fontSize: 10),
+                            color: Colors.white,
+                            fontSize: 10,
+                          ),
                         ),
                       ),
                     ),
@@ -87,7 +95,9 @@ class ProductCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                        fontSize: 13, fontWeight: FontWeight.w600),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Row(

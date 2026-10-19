@@ -1,26 +1,27 @@
-
+import 'package:carousel_slider/carousel_controller.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopsphere/core/widgets/carousel.dart';
 import 'package:shopsphere/core/widgets/reviews.dart';
+import 'package:shopsphere/features/cart/cubit/storage_cubit.dart';
+import 'package:shopsphere/features/cart/cubit/storage_state.dart';
+import 'package:shopsphere/features/cart/model/cart_model.dart';
 import 'package:shopsphere/features/products/cubit/product_cubit.dart';
 import 'package:shopsphere/features/products/cubit/product_state.dart';
-import 'package:shopsphere/features/products/data/reviews_model.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final int pID;
 
-  const ProductDetailsScreen({
-    super.key,
-    required this.pID,
-  });
+  const ProductDetailsScreen({super.key, required this.pID});
 
   @override
-  State<ProductDetailsScreen> createState() =>
-      _ProductDetailsScreenState();
+  State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int quantity = 1;
+  final CarouselSliderController _controller = CarouselSliderController();
 
   @override
   void initState() {
@@ -34,10 +35,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       appBar: AppBar(
         title: const Text('Product Details'),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.favorite_border),
-          ),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.favorite_border)),
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.shopping_cart_outlined),
@@ -47,9 +45,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       body: BlocBuilder<ProductCubit, ProductState>(
         builder: (context, state) {
           if (state is ProductLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (state is ProductFailure) {
@@ -57,19 +53,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(
-                    Icons.error_outline,
-                    size: 48,
-                    color: Colors.red,
-                  ),
+                  const Icon(Icons.error_outline, size: 48, color: Colors.red),
                   const SizedBox(height: 12),
                   const Text('Product not found'),
                   const SizedBox(height: 12),
                   ElevatedButton(
                     onPressed: () {
-                      context
-                          .read<ProductCubit>()
-                          .getProductDetails(widget.pID);
+                      context.read<ProductCubit>().getProductDetails(
+                        widget.pID,
+                      );
                     },
                     child: const Text('Retry'),
                   ),
@@ -90,43 +82,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             return ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                Container(
-                  height: 260,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: product.thumbnail.isNotEmpty
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Image.network(
-                            product.thumbnail,
-                            fit: BoxFit.contain,
-                            errorBuilder: (_, _, _) =>
-                                const Icon(
-                              Icons.image_not_supported_outlined,
-                              size: 64,
-                            ),
-                          ),
-                        )
-                      : const Icon(
-                          Icons.image_outlined,
-                          size: 64,
-                        ),
-                ),
-
+                Carousel(product: product, controller: _controller),
                 const SizedBox(height: 20),
 
-                if (product.brand != null &&
-                    product.brand!.isNotEmpty)
+                if (product.brand != null && product.brand!.isNotEmpty)
                   Text(
                     product.brand!,
-                    style: TextStyle(
-                      color: Colors.grey.shade600,
-                      fontSize: 14,
-                    ),
+                    style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
                   ),
-
                 const SizedBox(height: 6),
 
                 Text(
@@ -140,24 +103,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    const Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                      size: 20,
-                    ),
+                    const Icon(Icons.star, color: Colors.amber, size: 20),
                     const SizedBox(width: 4),
                     Text(
                       product.rating.toStringAsFixed(1),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(width: 8),
                     Text(
                       'Product rating',
-                      style: TextStyle(
-                        color: Colors.grey.shade600,
-                      ),
+                      style: TextStyle(color: Colors.grey.shade600),
                     ),
                   ],
                 ),
@@ -228,14 +183,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
 
                 const Divider(height: 32),
-
-                // Description
                 const Text(
                   'Description',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -249,13 +199,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                 const Divider(height: 32),
 
-                
                 const Text(
                   'Quantity',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 12),
                 Row(
@@ -267,9 +213,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       icon: const Icon(Icons.remove),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Text(
                         '$quantity',
                         style: const TextStyle(
@@ -290,24 +234,43 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 const SizedBox(height: 16),
 
                 SizedBox(
+                  width: double.infinity,
                   height: 52,
                   child: ElevatedButton.icon(
-                    onPressed: inStock
-                        ? () {
+                    onPressed: !inStock
+                        ? null
+                        : () async {
+                            final cartProduct = CartProduct(
+                              id: product.id,
+                              title: product.title,
+                              price: product.price.toDouble(),
+                              discountPercentage: product.discountPercentage
+                                  .toDouble(),
+                              thumbnail: product.thumbnail,
+                              stock: product.stock,
+                              quantity: quantity,
+                            );
+
+                            await context.read<CartCubit>().addToCart(
+                              cartProduct,
+                            );
+
+                            if (!context.mounted) return;
+
+                            final state = context.read<CartCubit>().state;
+
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  '$quantity x ${product.title} '
-                                  'added to cart (mock)',
+                                  state is CartFailure
+                                      ? state.message
+                                      : '${product.title} added to cart',
                                 ),
                               ),
                             );
-                          }
-                        : null,
+                          },
                     icon: const Icon(Icons.shopping_cart_outlined),
-                    label: Text(
-                      inStock ? 'Add to Cart' : 'Out of Stock',
-                    ),
+                    label: Text(inStock ? 'Add to Cart' : 'Out of Stock'),
                   ),
                 ),
 
@@ -315,10 +278,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                 const Text(
                   'Customer Reviews',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
 

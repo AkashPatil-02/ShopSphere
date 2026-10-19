@@ -37,6 +37,7 @@ class CategoryChipsShimmer extends StatelessWidget {
     );
   }
 }
+
 class CategoryChips extends StatefulWidget {
   final List<String> categories;
   final String? selectedCategory;

@@ -28,7 +28,7 @@ class Product {
     required this.thumbnail,
     required this.images,
     required this.availabilityStatus,
-    required this.reviews
+    required this.reviews,
   });
 
   double get discountedPrice =>
@@ -50,22 +50,24 @@ class Product {
       thumbnail: json['thumbnail'] as String,
       images: List<String>.from(json['images'] as List),
       availabilityStatus: json['availabilityStatus'] as String,
-      reviews: (json['reviews'] as List<dynamic>? ?? []).map((review) => Review.fromJson(review as Map<String, dynamic>,)).toList(),
+      reviews: (json['reviews'] as List<dynamic>? ?? [])
+          .map((review) => Review.fromJson(review as Map<String, dynamic>))
+          .toList(),
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'description': description,
-        'category': category,
-        'price': price,
-        'discountPercentage': discountPercentage,
-        'rating': rating,
-        'stock': stock,
-        'brand': brand,
-        'thumbnail': thumbnail,
-        'images': images,
-        'availabilityStatus': availabilityStatus,
-      };
+    'id': id,
+    'title': title,
+    'description': description,
+    'category': category,
+    'price': price,
+    'discountPercentage': discountPercentage,
+    'rating': rating,
+    'stock': stock,
+    'brand': brand,
+    'thumbnail': thumbnail,
+    'images': images,
+    'availabilityStatus': availabilityStatus,
+  };
 }

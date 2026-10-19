@@ -5,14 +5,17 @@ class Reviews extends StatelessWidget {
   final int rating;
   final String date;
   final String comment;
-  
+
   const Reviews({
     super.key,
-     required this.name, required this.rating, required this.date, required this.comment
-    });
+    required this.name,
+    required this.rating,
+    required this.date,
+    required this.comment,
+  });
 
   @override
-  Widget build(BuildContext context) {  
+  Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
@@ -22,9 +25,7 @@ class Reviews extends StatelessWidget {
           children: [
             Row(
               children: [
-                CircleAvatar(
-                  child: Text(name[0]),
-                ),
+                CircleAvatar(child: Text(name[0])),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
@@ -32,9 +33,7 @@ class Reviews extends StatelessWidget {
                     children: [
                       Text(
                         name,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(
                         date,
@@ -50,9 +49,7 @@ class Reviews extends StatelessWidget {
                   children: List.generate(
                     5,
                     (index) => Icon(
-                      index < rating
-                          ? Icons.star
-                          : Icons.star_border,
+                      index < rating ? Icons.star : Icons.star_border,
                       color: Colors.amber,
                       size: 16,
                     ),

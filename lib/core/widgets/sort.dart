@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SortOptions extends StatefulWidget {
-  const SortOptions({
-    super.key,
-    this.onChanged,
-    this.initialValue = 'Price',
-  });
+  const SortOptions({super.key, this.onChanged, this.initialValue = 'Price'});
 
   final ValueChanged<String>? onChanged;
   final String initialValue;
@@ -52,11 +48,7 @@ class _SortOptionsState extends State<SortOptions> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.sort_rounded,
-            size: 20,
-            color: theme.colorScheme.primary,
-          ),
+          Icon(Icons.sort_rounded, size: 20, color: theme.colorScheme.primary),
           const SizedBox(width: 6),
           Text(
             'Sort:',
@@ -68,7 +60,6 @@ class _SortOptionsState extends State<SortOptions> {
           const SizedBox(width: 2),
           DropdownButtonHideUnderline(
             child: DropdownButton<String>(
-              
               value: dropdownValue,
               borderRadius: BorderRadius.circular(12),
               elevation: 4,

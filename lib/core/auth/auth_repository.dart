@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -7,8 +6,7 @@ import 'package:shopsphere/core/auth/token_management.dart';
 import 'token_pair.dart';
 
 class AuthRepository {
-  AuthRepository({http.Client? client})
-      : _client = client ?? http.Client();
+  AuthRepository({http.Client? client}) : _client = client ?? http.Client();
 
   static const String _baseUrl = 'https://dummyjson.com';
 
@@ -34,7 +32,6 @@ class AuthRepository {
     }
 
     final data = jsonDecode(response.body) as Map<String, dynamic>;
-    print(data);
 
     await _tokenManager.saveTokens(
       TokenPair(
@@ -55,10 +52,7 @@ class AuthRepository {
     final response = await _client.post(
       Uri.parse('$_baseUrl/auth/refresh'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'refreshToken': refreshToken,
-        'expiresInMins': 30,
-      }),
+      body: jsonEncode({'refreshToken': refreshToken, 'expiresInMins': 30}),
     );
 
     if (response.statusCode != 200) {
@@ -71,8 +65,7 @@ class AuthRepository {
     await _tokenManager.saveTokens(
       TokenPair(
         accessToken: data['accessToken'] as String,
-        refreshToken:
-            data['refreshToken'] as String? ?? refreshToken,
+        refreshToken: data['refreshToken'] as String? ?? refreshToken,
       ),
     );
   }

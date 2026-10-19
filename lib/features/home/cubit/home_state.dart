@@ -18,7 +18,6 @@ class Failure extends HomeState {
 
 class Empty extends HomeState {}
 
-
 class ProductsLoading extends HomeState {}
 
 class ProductsSuccess extends HomeState {
@@ -37,18 +36,17 @@ class ProductsSuccess extends HomeState {
 
   bool get hasMore => products.length < total;
 
-   ProductsSuccess copyWith({
+  ProductsSuccess copyWith({
     List<Product>? products,
     bool? isLoadingMore,
     int? skip,
-  }) =>
-      ProductsSuccess(
-        products: products ?? this.products,
-        category: category,
-        skip: skip ?? this.skip,
-        total: total,
-        isLoadingMore: isLoadingMore ?? this.isLoadingMore,
-      );
+  }) => ProductsSuccess(
+    products: products ?? this.products,
+    category: category,
+    skip: skip ?? this.skip,
+    total: total,
+    isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+  );
 }
 
 class ProductsFailure extends HomeState {

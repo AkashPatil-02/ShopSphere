@@ -11,7 +11,6 @@ class HomeCubit extends Cubit<HomeState> {
   int _skip = 0;
   static const int _limit = 20;
 
-
   String _currentSort = "Rating";
   HomeCubit(this.endpoints) : super(Initialize());
 
@@ -32,12 +31,14 @@ class HomeCubit extends Cubit<HomeState> {
     selectedCategory = null;
     try {
       final result = await endpoints.getAllProducts(skip: 0);
-      emit(ProductsSuccess(
-        products: result.products,
-        category: null,
-        skip: 0,
-        total: result.total,
-      ));
+      emit(
+        ProductsSuccess(
+          products: result.products,
+          category: null,
+          skip: 0,
+          total: result.total,
+        ),
+      );
     } catch (e) {
       emit(ProductsFailure(e.toString(), _categories));
     }
@@ -48,12 +49,14 @@ class HomeCubit extends Cubit<HomeState> {
     selectedCategory = category;
     try {
       final products = await endpoints.getProductsByCategory(category);
-      emit(ProductsSuccess(
-        products: products,
-        category: category,
-        skip: 0,
-        total: products.length, // category endpoint returns all at once
-      ));
+      emit(
+        ProductsSuccess(
+          products: products,
+          category: category,
+          skip: 0,
+          total: products.length, // category endpoint returns all at once
+        ),
+      );
     } catch (e) {
       emit(ProductsFailure(e.toString(), _categories));
     }
@@ -66,104 +69,108 @@ class HomeCubit extends Cubit<HomeState> {
     emit(current.copyWith(isLoadingMore: true));
     try {
       final result = await endpoints.getAllProducts(skip: current.skip + 20);
-      final updatedProducts = [...current.products,...result.products,];
-      emit(current.copyWith(
-        products: _sortProducts(updatedProducts),
-        skip: current.skip + 20,
-        isLoadingMore: false,
-      ));
+      final updatedProducts = [...current.products, ...result.products];
+      emit(
+        current.copyWith(
+          products: _sortProducts(updatedProducts),
+          skip: current.skip + 20,
+          isLoadingMore: false,
+        ),
+      );
     } catch (e) {
       // Roll back isLoadingMore on error so user can retry
       emit(current.copyWith(isLoadingMore: false));
     }
   }
+
   Future<void> refreshProducts() async {
-  if (selectedCategory != null) {
-    await loadProductsByCategory(selectedCategory!);
-  } else {
-    await loadAllProducts();
-  }
-}
-
-List<Product> _sortProducts(List<Product> products){
-  final sorted = List<Product>.of(products);
-
-  switch(_currentSort){
-    case 'Rating':
-      sorted.sort((a,b)=>b.rating.compareTo(a.rating));
-      break;
-
-    case 'Title':
-    sorted.sort((a,b)=>a.title.toLowerCase().compareTo(b.title.toLowerCase()));
-    break;
-
-    case 'Price Low to High':
-    sorted.sort((a,b)=>a.price.compareTo(b.price));
-    break;
-
-    case 'Price High to Low':
-    sorted.sort((a,b)=>b.price.compareTo(a.price));
-    break;
-
-    case 'None':
-    refreshProducts();
-    break;
-  }
-  return sorted;
-}
-
-void sortProducts(String option) {
-  _currentSort = option;
-
-  final state = this.state;
-
-  if (state is ProductsSuccess) {
-    emit(
-      ProductsSuccess(
-        products: _sortProducts(state.products),
-        category: state.category,
-        total: state.total,
-        skip: 0,
-        isLoadingMore: state.isLoadingMore,
-      ),
-    );
-  }
-}
-
-Future<void> searchProducts(String query) async {
-  _searchQuery = query.trim();
-  _skip = 0;
-
-  if (_searchQuery.isEmpty) {
-    await loadAllProducts();
-    return;
+    if (selectedCategory != null) {
+      await loadProductsByCategory(selectedCategory!);
+    } else {
+      await loadAllProducts();
+    }
   }
 
-  emit(ProductsLoading());
+  List<Product> _sortProducts(List<Product> products) {
+    final sorted = List<Product>.of(products);
 
-  try {
-    final result = await endpoints.searchProducts(
-      query: _searchQuery,
-      skip: _skip,
-      limit: _limit,
-    );
+    switch (_currentSort) {
+      case 'Rating':
+        sorted.sort((a, b) => b.rating.compareTo(a.rating));
+        break;
 
-    _skip = result.products.length;
+      case 'Title':
+        sorted.sort(
+          (a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()),
+        );
+        break;
 
-    emit(
-      ProductsSuccess(
-        products: _sortProducts(result.products),
-        category: null,
-        isLoadingMore: false,
+      case 'Price Low to High':
+        sorted.sort((a, b) => a.price.compareTo(b.price));
+        break;
+
+      case 'Price High to Low':
+        sorted.sort((a, b) => b.price.compareTo(a.price));
+        break;
+
+      case 'None':
+        refreshProducts();
+        break;
+    }
+    return sorted;
+  }
+
+  void sortProducts(String option) {
+    _currentSort = option;
+
+    final state = this.state;
+
+    if (state is ProductsSuccess) {
+      emit(
+        ProductsSuccess(
+          products: _sortProducts(state.products),
+          category: state.category,
+          total: state.total,
+          skip: 0,
+          isLoadingMore: state.isLoadingMore,
+        ),
+      );
+    }
+  }
+
+  Future<void> searchProducts(String query) async {
+    _searchQuery = query.trim();
+    _skip = 0;
+
+    if (_searchQuery.isEmpty) {
+      await loadAllProducts();
+      return;
+    }
+
+    emit(ProductsLoading());
+
+    try {
+      final result = await endpoints.searchProducts(
+        query: _searchQuery,
         skip: _skip,
-        total: result.total
-      ),
-    );
-  } catch (e) {
-    emit(ProductsFailure(e.toString(),_categories));
-  }
-}
+        limit: _limit,
+      );
 
+      _skip = result.products.length;
+
+      emit(
+        ProductsSuccess(
+          products: _sortProducts(result.products),
+          category: null,
+          isLoadingMore: false,
+          skip: _skip,
+          total: result.total,
+        ),
+      );
+    } catch (e) {
+      emit(ProductsFailure(e.toString(), _categories));
+    }
+  }
 
   List<String> get categories => _categories;
 }
