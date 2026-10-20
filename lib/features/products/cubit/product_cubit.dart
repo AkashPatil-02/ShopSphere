@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shopsphere/core/network/product_endpoints.dart';
-import 'package:shopsphere/features/home/data/product_model.dart';
+import 'package:shopsphere/core/models/product_model.dart';
 import 'package:shopsphere/features/products/cubit/product_state.dart';
+import 'package:shopsphere/features/products/data/product_repository.dart';
 
 class ProductCubit extends Cubit<ProductState> {
-  final ProductEndpoints endpoints;
+  final ProductRepository endpoints;
   ProductCubit(this.endpoints) : super(ProductInitialize());
 
   Future<void> getProductDetails(int id) async {

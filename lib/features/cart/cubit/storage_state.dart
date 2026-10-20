@@ -1,4 +1,4 @@
-import 'package:shopsphere/features/cart/model/cart_model.dart';
+import 'package:shopsphere/features/cart/data/cart_model.dart';
 
 abstract class CartState {}
 

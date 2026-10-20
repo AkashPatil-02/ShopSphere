@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shopsphere/core/network/cart_endpoints.dart';
+import 'package:shopsphere/features/cart/data/cart_api_service.dart';
 import 'package:shopsphere/features/cart/cubit/storage_cubit.dart';
 import 'package:shopsphere/features/cart/cubit/storage_state.dart';
 import 'package:shopsphere/features/cart/presentation/success_screen.dart';
@@ -16,7 +16,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  final CartEndpoints _cartApi = CartEndpoints();
+  final CartApiService _cartApi = CartApiService();
   bool _isCheckingOut = false;
 
   @override

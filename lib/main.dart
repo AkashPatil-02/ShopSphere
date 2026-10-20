@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
-import 'package:shopsphere/core/network/auth_endpoints.dart';
+import 'package:shopsphere/features/auth/data/auth_repository.dart';
 
-import 'package:shopsphere/features/cart/model/cart_model.dart';
+import 'package:shopsphere/features/cart/data/cart_model.dart';
 import 'package:shopsphere/features/cart/cubit/storage_cubit.dart';
-import 'package:shopsphere/core/hive/hive_repository.dart';
+import 'package:shopsphere/features/cart/data/cart_local_repository.dart';
 import 'package:shopsphere/core/themes/apptheme.dart';
 import 'package:shopsphere/features/profile/cubit/profile_cubit.dart';
 import 'package:shopsphere/features/profile/presentation/profile_screen.dart';
@@ -30,7 +30,7 @@ class MainApp extends StatelessWidget {
       providers: [
         BlocProvider<CartCubit>(
           create: (_) =>
-              CartCubit(CartRepository(Hive.box<CartProduct>('cart')))
+              CartCubit(CartLocalRepository(Hive.box<CartProduct>('cart')))
                 ..loadCart(),
         ),
         BlocProvider<ProfileCubit>(

@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:shopsphere/core/auth/token_management.dart';
-import 'package:shopsphere/features/profile/data/profile.dart';
-
-import '../auth/token_pair.dart';
+import 'package:shopsphere/core/auth/token_pair.dart';
+import 'package:shopsphere/features/profile/data/profile_model.dart';
 
 class AuthRepository {
   AuthRepository({http.Client? client}) : _client = client ?? http.Client();

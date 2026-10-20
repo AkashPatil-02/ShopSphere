@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:shopsphere/core/network/auth_endpoints.dart';
+import 'package:shopsphere/features/auth/data/auth_repository.dart';
 import 'package:shopsphere/core/widgets/navbar.dart';
 import 'package:shopsphere/features/auth/cubit/auth_cubit.dart';
 import 'package:shopsphere/features/auth/cubit/auth_state.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopsphere/core/auth/token_management.dart';
-import 'package:shopsphere/core/network/auth_endpoints.dart';
+import 'package:shopsphere/features/auth/data/auth_repository.dart';
 import 'package:shopsphere/features/profile/cubit/profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {

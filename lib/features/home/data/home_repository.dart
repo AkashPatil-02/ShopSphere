@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:http/http.dart' as http;
-import 'package:shopsphere/features/home/data/product_model.dart';
+import 'package:shopsphere/core/models/product_model.dart';
 
-class HomeEndpoints {
+class HomeRepository {
   final http.Client _client;
   static const String _baseUrl = 'https://dummyjson.com';
 
-  HomeEndpoints({http.Client? client}) : _client = client ?? http.Client();
+  HomeRepository({http.Client? client}) : _client = client ?? http.Client();
 
   Future<List<String>> getCategories() async {
     final response = await _client.get(

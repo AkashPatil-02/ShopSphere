@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shopsphere/core/network/product_endpoints.dart';
 import 'package:shopsphere/features/home/data/product_model.dart';
 import 'package:shopsphere/features/products/cubit/product_cubit.dart';
+import 'package:shopsphere/features/products/data/product_repository.dart';
 import 'package:shopsphere/features/products/presentation/product_details.dart';
 
 class ProductCard extends StatelessWidget {
@@ -17,7 +17,7 @@ class ProductCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => BlocProvider(
-              create: (_) => ProductCubit(ProductEndpoints()),
+              create: (_) => ProductCubit(ProductRepository()),
               child: ProductDetailsScreen(pID: product.id),
             ),
           ),

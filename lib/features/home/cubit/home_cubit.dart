@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopsphere/core/models/product_model.dart';
 import 'package:shopsphere/features/home/cubit/home_state.dart';
-import 'package:shopsphere/core/network/home_endpoints.dart';
-import 'package:shopsphere/features/home/data/product_model.dart';
+import 'package:shopsphere/features/home/data/home_repository.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  final HomeEndpoints endpoints;
+  final HomeRepository endpoints;
   List<String> _categories = [];
   String? selectedCategory;
   String _searchQuery = '';

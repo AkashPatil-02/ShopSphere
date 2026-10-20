@@ -1,12 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shopsphere/core/network/cart_endpoints.dart';
-import 'package:shopsphere/features/cart/model/add_to_cart.dart';
-import 'package:shopsphere/features/cart/model/cart_model.dart';
-import 'package:shopsphere/core/hive/hive_repository.dart';
+import 'package:shopsphere/features/cart/data/cart_api_service.dart';
+import 'package:shopsphere/features/cart/data/add_to_cart.dart';
+import 'package:shopsphere/features/cart/data/cart_model.dart';
+import 'package:shopsphere/features/cart/data/cart_local_repository.dart';
 import 'package:shopsphere/features/cart/cubit/storage_state.dart';
 
 class CartCubit extends Cubit<CartState> {
-  final CartRepository repository;
+  final CartLocalRepository repository;
 
   CartCubit(this.repository) : super(CartInitial());
 
@@ -63,7 +63,7 @@ class CartCubit extends Cubit<CartState> {
 
 Future<Map<String, dynamic>> syncCartToDummyJson({
   required int userId,
-  required CartEndpoints cartep,
+  required CartApiService cartep,
 }) async {
   final items = repository.items;
 

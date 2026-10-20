@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:shopsphere/features/home/data/product_model.dart';
+import 'package:shopsphere/core/models/product_model.dart';
 
 class Carousel extends StatefulWidget {
   final Product product;

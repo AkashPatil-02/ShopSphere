@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce/hive.dart';
 
-import 'package:shopsphere/core/network/home_endpoints.dart';
-import 'package:shopsphere/core/hive/hive_repository.dart';
+import 'package:shopsphere/features/home/data/home_repository.dart';
+import 'package:shopsphere/features/cart/data/cart_local_repository.dart';
 import 'package:shopsphere/core/widgets/category_chips.dart';
-import 'package:shopsphere/core/widgets/product.dart';
+import 'package:shopsphere/core/widgets/product_card.dart';
 import 'package:shopsphere/core/widgets/product_grid_shimmer.dart';
 import 'package:shopsphere/core/widgets/sort.dart';
 
 import 'package:shopsphere/features/cart/cubit/storage_cubit.dart';
 import 'package:shopsphere/features/cart/cubit/storage_state.dart';
-import 'package:shopsphere/features/cart/model/cart_model.dart';
+import 'package:shopsphere/features/cart/data/cart_model.dart';
 import 'package:shopsphere/features/cart/presentation/cart_screen.dart';
 
 import 'package:shopsphere/features/home/cubit/home_cubit.dart';
@@ -26,11 +26,11 @@ class HomeScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => HomeCubit(HomeEndpoints())..loadCategories(),
+          create: (_) => HomeCubit(HomeRepository())..loadCategories(),
         ),
         BlocProvider(
           create: (_) =>
-              CartCubit(CartRepository(Hive.box<CartProduct>('cart')))
+              CartCubit(CartLocalRepository(Hive.box<CartProduct>('cart')))
                 ..loadCart(),
         ),
       ],

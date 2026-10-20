@@ -6,7 +6,7 @@ import 'package:shopsphere/core/widgets/carousel.dart';
 import 'package:shopsphere/core/widgets/reviews.dart';
 import 'package:shopsphere/features/cart/cubit/storage_cubit.dart';
 import 'package:shopsphere/features/cart/cubit/storage_state.dart';
-import 'package:shopsphere/features/cart/model/cart_model.dart';
+import 'package:shopsphere/features/cart/data/cart_model.dart';
 import 'package:shopsphere/features/products/cubit/product_cubit.dart';
 import 'package:shopsphere/features/products/cubit/product_state.dart';
 

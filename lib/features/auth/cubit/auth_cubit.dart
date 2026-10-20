@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopsphere/features/auth/cubit/auth_state.dart';
-
-import '../../../core/network/auth_endpoints.dart';
+import 'package:shopsphere/features/auth/data/auth_repository.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   final AuthRepository _authRepository;

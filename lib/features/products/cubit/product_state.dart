@@ -1,4 +1,4 @@
-import 'package:shopsphere/features/home/data/product_model.dart';
+import 'package:shopsphere/core/models/product_model.dart';
 
 class ProductState {}
 

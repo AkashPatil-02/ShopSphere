@@ -1,4 +1,4 @@
-import 'package:shopsphere/features/profile/data/profile.dart';
+import 'package:shopsphere/features/profile/data/profile_model.dart';
 
 class ProfileState {}
 
