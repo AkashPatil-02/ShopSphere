@@ -1,18 +1,20 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce/hive.dart';
-import 'package:shopsphere/core/hive/hive_repository.dart';
 
-import 'dart:async';
-
-import 'package:shopsphere/core/widgets/category_chips.dart';
 import 'package:shopsphere/core/network/home_endpoints.dart';
-import 'package:shopsphere/core/widgets/product_grid.dart';
+import 'package:shopsphere/core/hive/hive_repository.dart';
+import 'package:shopsphere/core/widgets/category_chips.dart';
+import 'package:shopsphere/core/widgets/product.dart';
 import 'package:shopsphere/core/widgets/product_grid_shimmer.dart';
 import 'package:shopsphere/core/widgets/sort.dart';
+
 import 'package:shopsphere/features/cart/cubit/storage_cubit.dart';
+import 'package:shopsphere/features/cart/cubit/storage_state.dart';
 import 'package:shopsphere/features/cart/model/cart_model.dart';
 import 'package:shopsphere/features/cart/presentation/cart_screen.dart';
+
 import 'package:shopsphere/features/home/cubit/home_cubit.dart';
 import 'package:shopsphere/features/home/cubit/home_state.dart';
 
@@ -21,8 +23,17 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => HomeCubit(HomeEndpoints())..loadCategories(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => HomeCubit(HomeEndpoints())..loadCategories(),
+        ),
+        BlocProvider(
+          create: (_) =>
+              CartCubit(CartRepository(Hive.box<CartProduct>('cart')))
+                ..loadCart(),
+        ),
+      ],
       child: const HomeView(),
     );
   }
@@ -58,6 +69,7 @@ class _HomeViewState extends State<HomeView> {
     _searchController.dispose();
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
+    _searchDebounce?.cancel();
     super.dispose();
   }
 
@@ -71,21 +83,31 @@ class _HomeViewState extends State<HomeView> {
         ),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BlocProvider(
-                    create: (_) =>
-                        CartCubit(CartRepository(Hive.box<CartProduct>('cart')))
-                          ..loadCart(),
-                    child: CartScreen(),
-                  ),
+          BlocBuilder<CartCubit, CartState>(
+            builder: (context, cartState) {
+              int itemCount = 0;
+              if (cartState is CartLoaded) {
+                itemCount = cartState.itemCount;
+              }
+
+              return IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => BlocProvider.value(
+                        value: context.read<CartCubit>(),
+                        child: const CartScreen(),
+                      ),
+                    ),
+                  );
+                },
+                icon: Badge.count(
+                  count: itemCount,
+                  child: const Icon(Icons.shopping_cart_rounded),
                 ),
               );
             },
-            icon: const Icon(Icons.shopping_cart_rounded),
           ),
         ],
       ),
@@ -185,7 +207,7 @@ class _HomeViewState extends State<HomeView> {
 
   Widget _buildProductSection(HomeState state) {
     if (state is Initialize || state is Loading || state is ProductsLoading) {
-      return ProductGridShimmer();
+      return const ProductGridShimmer();
     }
 
     if (state is ProductsFailure) {
@@ -209,10 +231,10 @@ class _HomeViewState extends State<HomeView> {
               padding: const EdgeInsets.only(bottom: 12),
               sliver: SliverGrid(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                  crossAxisCount: 2, // <-- Grid size/columns
                   mainAxisSpacing: 12,
                   crossAxisSpacing: 12,
-                  childAspectRatio: 0.72,
+                  childAspectRatio: 0.70, // <-- Adjusted aspect ratio
                 ),
                 delegate: SliverChildBuilderDelegate((context, index) {
                   return ProductCard(product: state.products[index]);
@@ -238,8 +260,7 @@ class _HomeViewState extends State<HomeView> {
         ),
       );
     }
-
-    return ProductGridShimmer();
+    return const ProductGridShimmer();
   }
 }
 

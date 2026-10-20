@@ -23,7 +23,7 @@ class TokenManagement {
   }
 
   Future<void> clearTokens() async {
-    _storage.delete(key: _accessKey);
-    _storage.delete(key: _refreshKey);
+    await _storage.delete(key: _accessKey);
+    await _storage.delete(key: _refreshKey);
   }
 }

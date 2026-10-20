@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:shopsphere/core/auth/token_management.dart';
+import 'package:shopsphere/features/profile/data/profile.dart';
 
-import 'token_pair.dart';
+import '../auth/token_pair.dart';
 
 class AuthRepository {
   AuthRepository({http.Client? client}) : _client = client ?? http.Client();
@@ -41,7 +42,6 @@ class AuthRepository {
     );
   }
 
-  // REFRESH ACCESS TOKEN
   Future<void> refreshTokens() async {
     final refreshToken = await _tokenManager.getRefreshToken();
 
@@ -70,39 +70,28 @@ class AuthRepository {
     );
   }
 
-  // LOGOUT
   Future<void> logout() async {
     await _tokenManager.clearTokens();
   }
 
-  // OPTIONAL: CALL THIS WHEN THE PROTECTED ENDPOINT RETURNS 401
-  Future<http.Response> getProtectedResource(String endpoint) async {
-    Future<http.Response> makeRequest() async {
-      final token = await _tokenManager.getAccessToken();
+  Future<Profile> getUserProfile() async {
+    final token = await _tokenManager.getAccessToken();
 
-      if (token == null || token.isEmpty) {
-        throw Exception('Please log in first.');
-      }
-
-      return _client.get(
-        Uri.parse('$_baseUrl$endpoint'),
-        headers: {'Authorization': 'Bearer $token'},
-      );
+    if (token == null || token.isEmpty) {
+      throw Exception('Please log in first.');
     }
 
-    var response = await makeRequest();
-
-    if (response.statusCode == 401) {
-      try {
-        await refreshTokens();
-        response = await makeRequest();
-      } catch (_) {
-        await _tokenManager.clearTokens();
-        rethrow;
-      }
+    final response = await _client.get(
+      Uri.parse('$_baseUrl/auth/me'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to fetch user Data: ${response.statusCode}');
     }
 
-    return response;
+    final data = jsonDecode(response.body) as Map<String, dynamic>;
+    final userData = Profile.fromJson(data);
+    return userData;
   }
 
   void dispose() {

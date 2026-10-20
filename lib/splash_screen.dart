@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopsphere/core/auth/token_management.dart';
+import 'package:shopsphere/core/widgets/navbar.dart';
 import 'package:shopsphere/features/auth/presentation/login_screen.dart';
-import 'package:shopsphere/features/home/presentation/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -23,9 +23,8 @@ class _SplashScreenState extends State<SplashScreen> {
     if (!mounted) return;
 
     if (token != null && token.isNotEmpty) {
-      Navigator.of(
-        context,
-      ).pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen()));
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (_) => const NavBar()));
     } else {
       Navigator.of(
         context,

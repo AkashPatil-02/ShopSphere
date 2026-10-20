@@ -34,13 +34,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Product Details'),
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.favorite_border)),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.shopping_cart_outlined),
-          ),
-        ],
       ),
       body: BlocBuilder<ProductCubit, ProductState>(
         builder: (context, state) {

@@ -18,6 +18,8 @@ class CartLoaded extends CartState {
   });
 }
 
+class Checkout extends CartState{}
+
 class CartFailure extends CartState {
   final String message;
 

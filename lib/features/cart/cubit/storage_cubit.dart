@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopsphere/core/network/cart_endpoints.dart';
+import 'package:shopsphere/features/cart/model/add_to_cart.dart';
 import 'package:shopsphere/features/cart/model/cart_model.dart';
 import 'package:shopsphere/core/hive/hive_repository.dart';
 import 'package:shopsphere/features/cart/cubit/storage_state.dart';
@@ -57,5 +59,31 @@ class CartCubit extends Cubit<CartState> {
     } catch (e) {
       emit(CartFailure('Failed to clear cart: $e'));
     }
+  } 
+
+Future<Map<String, dynamic>> syncCartToDummyJson({
+  required int userId,
+  required CartEndpoints cartep,
+}) async {
+  final items = repository.items;
+
+  if (items.isEmpty) {
+    throw Exception('Your cart is empty.');
   }
+
+  final request = AddCartRequest(
+    userId: userId,
+    products: items.map((item) {
+      return AddCartProduct(
+        id: item.id,
+        quantity: item.quantity,
+      );
+    }).toList(),
+  );
+  final response = await cartep.checkout(request);
+  await clearCart();
+  return response;
+
+}
+
 }
